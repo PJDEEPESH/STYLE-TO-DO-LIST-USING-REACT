@@ -10,17 +10,22 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (todo === "") {
       alert("Please enter a task!");
       return; // Prevent adding empty tasks
     }
 
+    const newTodo = {
+      id: `${todo}-${Date.now()}`,
+      todo,
+      completed: false, // Default completion status
+    };
+
     if (editId) {
-      const editTodo = todos.find((i) => i.id === editId);
+      // Update existing task
       const updatedTodos = todos.map((t) =>
-        t.id === editTodo.id
-          ? (t = { id: t.id, todo })
-          : { id: t.id, todo: t.todo }
+        t.id === editId ? newTodo : t
       );
       setTodos(updatedTodos);
       setEditId(0);
@@ -28,10 +33,9 @@ const App = () => {
       return;
     }
 
-    if (todo !== "") {
-      setTodos([{ id: `${todo}-${Date.now()}`, todo }, ...todos]);
-      setTodo("");
-    }
+    // Add new task
+    setTodos([newTodo, ...todos]);
+    setTodo("");
   };
 
   const handleDelete = (id) => {
@@ -45,10 +49,25 @@ const App = () => {
     setEditId(id);
   };
 
+  const handleMarkComplete = (id) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    );
+    setTodos(updatedTodos);
+  };
+
+  const totalTasks = todos.length;
+  const ongoingTasks = todos.filter((todo) => !todo.completed).length;
+  const completedTasks = totalTasks - ongoingTasks;
+
   return (
     <div className="App">
       <div className="container">
         <h1>Todo List App</h1>
+        <p>
+          Total Tasks: {totalTasks} | Ongoing: {ongoingTasks} | Completed:{" "}
+          {completedTasks}
+        </p>
         <TodoForm
           handleSubmit={handleSubmit}
           todo={todo}
@@ -60,6 +79,7 @@ const App = () => {
           todos={todos}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
+          handleMarkComplete={handleMarkComplete}
         />
       </div>
     </div>
