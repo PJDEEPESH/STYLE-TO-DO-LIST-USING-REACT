@@ -10,6 +10,10 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (todo === "") {
+      alert("Please enter a task!");
+      return; // Prevent adding empty tasks
+    }
 
     if (editId) {
       const editTodo = todos.find((i) => i.id === editId);
