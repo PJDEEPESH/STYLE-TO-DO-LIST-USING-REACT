@@ -13,5 +13,4 @@ const TodoForm = ({ handleSubmit, todo, editId, setTodo }) => {
     </form>
   );
 };
-
 export default TodoForm;
