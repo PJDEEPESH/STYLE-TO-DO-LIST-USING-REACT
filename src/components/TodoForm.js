@@ -1,5 +1,4 @@
 import React from "react";
-
 const TodoForm = ({ handleSubmit, todo, editId, setTodo }) => {
   return (
     <form className="todoForm" onSubmit={handleSubmit}>
